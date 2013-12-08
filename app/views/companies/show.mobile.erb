@@ -1,0 +1,26 @@
+<div data-role="header" data-id="header" data-position="fixed" data-tap-toggle="false">
+  <a href="" data-role="button" data-icon="back" data-transition="slide" data-rel="back" data-direction="reverse">Results</a>
+  <h1>JobSite</h1>
+</div><!-- /header -->
+
+<div data-role="content">
+  <%= @company.name %><br>
+  <%= @company.address %><br>
+  <%= @company.city %>, <%= @company.state_code %> <%= @company.zip %><br>
+  <img style="max-width: 100%" src="<%= @company.logo %>" /><br>
+
+  <ul data-role="listview" data-inset="true" data-divider-theme="a">
+    <li data-role="list-divider">Jobs</li>
+
+    <% @company.jobs.each do |j| %>
+    <li>
+      <a href="/companies/<%= j.company.id %>/jobs/<%= j.id %>">
+	<h3><%= j.title %></h3>
+	<p><%= j.city %>, <%= j.state_code %></p>
+      </a>
+    </li>
+
+    <% end %>
+  </ul>
+</div>
+

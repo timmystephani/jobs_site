@@ -1,0 +1,17 @@
+<div data-role="header" data-id="header" data-position="fixed" data-tap-toggle="false">
+  <h1>JobSite</h1>
+</div><!-- /header -->
+
+<div data-role="content">
+
+  <ul data-role="listview" data-inset="true">
+    <li><a href="/users/log_in">Log In</a></li>
+  </ul>
+  <% if user_signed_in? %>
+  signed in
+  <% else %>
+  signed out
+  <% end %>
+
+</div>
+

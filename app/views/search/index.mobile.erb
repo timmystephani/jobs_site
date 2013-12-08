@@ -1,0 +1,94 @@
+<div data-role="panel" id="panel" data-theme="a">
+  <ul data-role="listview" data-theme="a">
+    <li><a href="">Search</a></li>
+    <li><a href="">Saved Jobs</a></li>
+    <li><a href="">Log In</a></li>
+  </ul>
+</div>
+
+
+<div data-role="header" data-id="header" data-position="fixed" data-tap-toggle="false">
+  <a href="#panel" data-role="button">Menu</a>
+  <h1>JobSite</h1>
+</div><!-- /header -->
+
+<div data-role="content">
+  <div data-role="controlgroup" style="text-align: center;" data-type="horizontal">
+    <a href="#" id="menu_search_by_job" data-role="button">&nbsp;&nbsp;&nbsp;By Job&nbsp;&nbsp;&nbsp;</a>
+    <a href="#" id="menu_search_by_company" data-role="button">By Company</a>
+  </div>
+
+  <br>
+
+  <form id="form_search" method="get">
+
+    <div id="div_search_by_job">
+      <input type="search" name="title" placeholder="Job Title e.g. Programmer Analyst"/>
+      <input type="search" name="location" placeholder="City, State e.g. Milwaukee, WI" />
+    </div>
+
+    <div id="div_search_by_company">
+      <select data-native-menu="false" name="company" id="company">
+	<option>Select a company</option>
+	<% @companies.each do |c| %>
+	<option value="<%= c.id %>"><%= c.name %></option>
+	<% end %>
+      </select>
+    </div>
+
+  </form>
+
+  <div style="text-align: right;">
+    <input type="submit" name="submit" id="submit" value="Search" data-role="button" data-inline="true" data-theme="a"/>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    showSearchByJob();
+
+    $('#menu_search_by_company').click(function() {
+      showSearchByCompany();
+    });
+    $('#menu_search_by_job').click(function() {
+      showSearchByJob();
+    });
+
+    $('#submit').click(function() {
+      if ($('#div_search_by_job').is(":visible")) {
+        submitSearchByJob();
+      } else {
+        submitSearchByCompany();
+      }
+    });
+  });
+
+  function showSearchByCompany() {
+    $('#menu_search_by_company').addClass('ui-btn-active');
+    $('#menu_search_by_job').removeClass('ui-btn-active');
+    $('#div_search_by_company').show();
+    $('#div_search_by_job').hide();
+  }
+
+  function showSearchByJob() {
+    $('#menu_search_by_job').addClass('ui-btn-active');
+    $('#menu_search_by_company').removeClass('ui-btn-active');
+    $('#div_search_by_job').show();
+    $('#div_search_by_company').hide();
+  }
+
+  function submitSearchByJob() {
+    $('#form_search').attr('action', '/companies/jobs/search');
+    $('#form_search').submit();
+  }
+
+  function submitSearchByCompany() {
+    var company_id = $('#company').val();
+    var input = $("<input>").attr("type", "hidden").attr("name", "id").val(company_id);
+
+    $('#form_search').attr('action', '/companies/' + company_id);
+    $('#form_search').append($(input));
+
+    $('#form_search').submit();
+  }
+</script>

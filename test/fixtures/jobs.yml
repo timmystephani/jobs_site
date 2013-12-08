@@ -1,0 +1,35 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  company: 
+  title: MyString
+  body_desktop: MyText
+  body_mobile: MyText
+  is_active: false
+  apply_url: MyText
+  city: MyString
+  state_code: MyString
+  is_full_time: false
+  is_internship: false
+  degree_min: MyString
+  exp_min: MyString
+  exp: 
+  salary_min: MyString
+  salary_max: MyString
+
+two:
+  company: 
+  title: MyString
+  body_desktop: MyText
+  body_mobile: MyText
+  is_active: false
+  apply_url: MyText
+  city: MyString
+  state_code: MyString
+  is_full_time: false
+  is_internship: false
+  degree_min: MyString
+  exp_min: MyString
+  exp: 
+  salary_min: MyString
+  salary_max: MyString

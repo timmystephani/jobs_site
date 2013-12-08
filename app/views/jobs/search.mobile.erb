@@ -1,0 +1,45 @@
+
+<div data-role="header" data-id="header" data-position="fixed" data-tap-toggle="false">
+  <a href="" data-role="button" data-icon="back" data-transition="slide" data-rel="back" data-direction="reverse">Search</a>
+  <h1>JobSite</h1>
+</div><!-- /header -->
+
+<div data-role="content">
+
+
+  <strong>Searched for:</strong> <%= @title %><br>
+  Showing results <%= (25 * (@page - 1) + 1) %> - <%= [@page * 25, @jobs.total_entries].min %> of <%= @jobs.total_entries %>
+  <ul data-role="listview" data-inset="true" data-divider-theme="a">
+    <% last_company_id = -1 %>
+
+    <% @jobs.each do |j| %>
+
+    <% if last_company_id != j.company.id %>
+    <li data-role="list-divider"><%= j.company.name %></li>
+    <% end %>
+
+    <li>
+      <a href="/companies/<%= j.company.id %>/jobs/<%= j.id %>">
+	<h3><%= j.title %></h3>
+	<p><%= j.city %>, <%= j.state_code %></p>
+      </a>
+      <a href="" data-icon="star">Delete</a>
+    </li>
+
+    <% last_company_id = j.company.id %>
+
+    <% end %>
+  </ul>
+
+  <div data-role="controlgroup" data-type="horizontal">
+    <a href="/companies/jobs/search?page=<%= [@page - 1, 1].max %>" data-role="button" data-icon="arrow-l" data-iconpos="notext" data-theme="a" data-inline="true"></a>
+    <% for i in 1..(@jobs.total_entries / 25 + 1) %>
+    <% if i == @page %>
+    <a href="/companies/jobs/search?page=<%= i %>" data-role="button" data-inline="true"><%= i %></a>    
+    <% else %>
+    <a href="/companies/jobs/search?page=<%= i %>" data-role="button" data-theme="a" data-inline="true"><%= i %></a>
+    <% end %>
+    <% end %>
+    <a href="/companies/jobs/search?page=<%= [@page + 1, @jobs.total_entries / 25 + 1].min %>" data-role="button" data-icon="arrow-r" data-iconpos="notext" data-theme="a" data-inline="true"></a>
+  </div>
+</div>

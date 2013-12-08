@@ -1,0 +1,19 @@
+<div data-role="header" data-id="header" data-position="fixed" data-tap-toggle="false">
+  <a href="/more/index/" data-role="button" data-icon="arrow-l" data-transition="slide" data-direction="reverse">Cancel</a>
+    <h1>Job Site</h1>
+    <%= link_to 'Log In', "#", :onclick=>"$('#main').submit()", "data-role" => "button", "data-icon" => "check", "data-theme" => "b", :class => "ui-btn-right" %>
+  </div><!-- /header -->
+  
+  <div data-role="content">
+    <%= form_tag("/users/login/", :method => "post", :id => 'main') do %>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="<%= params[:email] %>" />
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" />
+    <% end %>
+    <br>
+    <hr>
+    <p>Lost or forgot your account information?</p>
+    <a href="/users/recover" data-role="button" data-inline="true" data-theme="a">Recover your account</a>
+  </div>
+</div>

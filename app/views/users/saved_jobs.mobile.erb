@@ -1,0 +1,39 @@
+<div data-role="header" data-id="header" data-position="fixed" data-tap-toggle="false">
+  <h1>JobSite</h1>
+</div><!-- /header -->
+
+<div data-role="content">
+  <ul data-role="listview" id="lv_jobs" data-inset="true" data-divider-theme="a">
+    <li data-role="list-divider">Saved Jobs</li>
+    <% @user.saved_jobs.each do |j| %>
+
+    <li id="li_job_<%= j.id %>">
+      <a href="">
+	<h3><%= j.job.title %></h3>
+	<p><strong><%= j.job.company.name %></strong></p>
+	<p><%= j.job.city %>, <%= j.job.state_code %></p>
+	<p>Saved <%= time_ago_in_words(j.created_at) %> ago</p>
+      </a>
+      <a href="" id="<%= j.id %>" onclick="deleteJob(this)" data-icon="delete">test</a>
+    </li>
+    <% end %>
+  </ul>
+</div>
+
+<script>
+function deleteJob(link) {
+  if (confirm('Are you sure you want to delete this job?')) {
+    $.ajax({
+      url: "/users/<%= current_user.id %>/delete_job/" + link.id,
+      timeout: 5000,
+      success: function() {
+        $('#li_job_' + link.id).remove();
+        $('#lv_jobs').listview('refresh');
+      },
+      error: function() {
+        alert('Error deleting job. Please try again later.');
+      }
+    });  
+  }
+}
+</script>

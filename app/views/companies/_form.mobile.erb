@@ -1,0 +1,42 @@
+<%= form_for(@company) do |f| %>
+<%= label_tag :name, 'Name' %>
+<%= f.text_field :name %>
+
+<%= label_tag :address, 'Address' %>
+<%= f.text_field :address %>
+
+<%= label_tag :city, 'City' %>
+<%= f.text_field :city %>
+
+<%= label_tag :state_code, 'State code' %>
+<%= f.text_field :state_code %>
+
+<%= label_tag :zip, 'Zip' %>
+<%= f.text_field :zip %>
+
+<%= label_tag :description, 'Description' %>
+<%= f.text_area :description %>
+
+<%= label_tag :industry, 'Industry' %>
+<%= f.text_field :industry %>
+
+<%= label_tag :is_active, 'Active' %>
+<%= f.select :is_active, options_for_select([['Yes', true], ['No', false]], @company.is_active) %>
+
+<%= label_tag :jobs_url, 'Jobs URL' %>
+<%= f.text_field :jobs_url %>
+
+<%= label_tag :logo, 'Logo URL' %>
+<%= f.text_field :logo %>
+
+<%= label_tag :phone, 'Phone' %>
+<%= f.text_field :phone %>
+
+<%= label_tag :size, 'Size' %>
+<%= f.text_field :size %>
+
+<%= label_tag :website, 'Website' %>
+<%= f.text_field :website %>
+
+<%= submit_tag 'Save' %>
+<% end %>
