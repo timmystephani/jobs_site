@@ -1,45 +1,55 @@
+<%= render "shared/panel" %>
 
 <div data-role="header" data-id="header" data-position="fixed" data-tap-toggle="false">
-  <a href="" data-role="button" data-icon="back" data-transition="slide" data-rel="back" data-direction="reverse">Search</a>
+  <a href="#panel" data-role="button" data-icon="grid">Menu</a>
   <h1>JobSite</h1>
 </div><!-- /header -->
 
 <div data-role="content">
-
-
-  <strong>Searched for:</strong> <%= @title %><br>
-  Showing results <%= (25 * (@page - 1) + 1) %> - <%= [@page * 25, @jobs.total_entries].min %> of <%= @jobs.total_entries %>
-  <ul data-role="listview" data-inset="true" data-divider-theme="a">
-    <% last_company_id = -1 %>
-
+  <p><strong>Searched for:</strong> <%= @title %></p>
+  <ul data-role="listview" id="ul_jobs">
     <% @jobs.each do |j| %>
-
-    <% if last_company_id != j.company.id %>
-    <li data-role="list-divider"><%= j.company.name %></li>
-    <% end %>
-
     <li>
       <a href="/companies/<%= j.company.id %>/jobs/<%= j.id %>">
 	<h3><%= j.title %></h3>
-	<p><%= j.city %>, <%= j.state_code %></p>
+	<p><strong><%= j.company.name %></strong> - <%= j.city %>, <%= j.state_code %></p>
       </a>
-      <a href="" data-icon="star">Delete</a>
     </li>
-
-    <% last_company_id = j.company.id %>
-
     <% end %>
+    <li id="li_loadmore"><a href="">Load more<img class="ui-li-icon" id="gif_loading" src="http://www.localgastropub.com/images/small_loading.gif" /></a></li>
   </ul>
-
-  <div data-role="controlgroup" data-type="horizontal">
-    <a href="/companies/jobs/search?page=<%= [@page - 1, 1].max %>" data-role="button" data-icon="arrow-l" data-iconpos="notext" data-theme="a" data-inline="true"></a>
-    <% for i in 1..(@jobs.total_entries / 25 + 1) %>
-    <% if i == @page %>
-    <a href="/companies/jobs/search?page=<%= i %>" data-role="button" data-inline="true"><%= i %></a>    
-    <% else %>
-    <a href="/companies/jobs/search?page=<%= i %>" data-role="button" data-theme="a" data-inline="true"><%= i %></a>
-    <% end %>
-    <% end %>
-    <a href="/companies/jobs/search?page=<%= [@page + 1, @jobs.total_entries / 25 + 1].min %>" data-role="button" data-icon="arrow-r" data-iconpos="notext" data-theme="a" data-inline="true"></a>
-  </div>
+  <br><br>
 </div>
+<input type="hidden" id="page" name="page" value="<%= @page %>" />
+<script>
+  $(document).ready(function() {
+    $('#gif_loading').hide();
+
+    if (localStorage.getItem('page_offset') != null) {
+      $.mobile.silentScroll(localStorage.getItem('page_offset'));
+    }
+
+    $('#li_loadmore').click(function() {
+      $('#gif_loading').show();
+      $.ajax({
+        url: '/api/v1/companies/jobs/search',
+        data: { page: parseInt($('#page').val()) + 1 },
+        success: function(data) {
+          for (var i = 0; i < data.length; i++) {
+            $('#li_loadmore').before('<li><a href="/companies/' + data[i].company_id + '/jobs/' + data[i].id + '"><h3>' + data[i].title + '</h3></a></li>');
+          }
+          $('#page').val(parseInt($('#page').val()) + 1);
+          $('#ul_jobs').listview('refresh');
+          $('#gif_loading').hide();
+        },
+        error: function() {
+          alert('fail');
+        }
+      });
+    });
+
+    $('#ul_jobs li').on('click', function() {
+      localStorage.setItem('page_offset', $(this).offset().top);
+    });
+  });
+</script>

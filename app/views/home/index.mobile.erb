@@ -5,3 +5,12 @@
 <div data-role="content">
   Description here
 </div>
+
+
+<div data-role="panel" id="panel" data-theme="a">
+  <ul data-role="listview" data-theme="a">
+    <li><a href="/">Search</a></li>
+    <li><a href="/users/<%= current_user.id unless current_user.nil? %>/saved_jobs">Saved Jobs</a></li>
+    <li><a href="/users/log_in">Log In</a></li>
+  </ul>
+</div>

@@ -1,3 +1,5 @@
+
+
 <div data-role="header" data-id="header" data-position="fixed" data-tap-toggle="false">
   <a href="" data-role="button" data-icon="back" data-transition="slide" data-rel="back" data-direction="reverse">Back</a>
   <h1>JobSite</h1>
@@ -9,48 +11,22 @@
     <% end %>
   <% end %>
   <% if show_save %>
-  <a href="" id="save" data-role="button" data-icon="star">Save</a>
   <% end %>
 </div><!-- /header -->
 
 <div data-role="content">
-  <ul data-role="listview" data-inset="true" data-divider-theme="a">
-    <li data-role="list-divider"><%= @job.title %></li>
-    <li>
-      <table style="word-wrap:break-word; table-layout: fixed; width: 100%">
-          <tr>
-            <td style="vertical-align: top; width: 29%">Company:</td>
-            <td style="vertical-align: top; font-weight: normal;"><a href="/companies/<%= @job.company.id %>"><%= @job.company.name %></a></td>
-          </tr>
-          <tr>
-            <td style="vertical-align: top; width: 29%">Location:</td>
-            <td style="vertical-align: top; font-weight: normal;"><%= @job.city %>, <%= @job.state_code %></td>
-          </tr>
-	  <% if @job.salary_min.nil? == false && @job.salary_max.nil? == false %>
-          <tr>
-            <td style="vertical-align: top; width: 29%">Salary:</td>
-            <td style="vertical-align: top; font-weight: normal;"><%= @job.salary_min %>-<%= @job.salary_max %></td>
-          </tr>
-	  <% end %>
-          <tr>
-            <td style="vertical-align: top; width: 29%">Posted on:</td>
-            <td style="vertical-align: top; font-weight: normal;"><%= @job.created_at.to_time.strftime('%m/%d/%Y') %></td>
-          </tr>
-      </table>
-    </li>
-  </ul>
+  <h3><%= @job.title %></h3>
+  <h3><%= @job.company.name %> - <%= @job.city %>, <%= @job.state_code %></h3>
 
   <div data-role="collapsible">
     <h3>Description</h3>
     <p><%= @job.body_mobile %></p><!--.html_safe -->
   </div>
 
-  <ul data-role="listview" data-inset="true">
-    <li><a href="">Email job</a></li>
-  </ul>
-
-  <div style="text-align: right;">
-    <a href="<%= @job.apply_url %>" data-theme="a" data-role="button" data-inline="true">Apply</a>
+  <div data-role="controlgroup" data-type="horizontal" >
+    <a href="<%= @job.apply_url %>" data-role="button" data-icon="check">Apply</a>
+    <a href="" id="save" data-role="button" data-icon="star">Save</a>
+    <a href="" data-role="button" data-icon="info">Email</a>
   </div>
 </div>
 
@@ -62,7 +38,8 @@
           url: "/users/<%= current_user.id %>/save_job/<%= @job.id %>",
           timeout: 5000,
           success: function() {
-           $('#save').hide();
+           $('#save').text('Saved');
+      $('#save').button('refresh');
            alert('Job has been saved');
           },
           error: function() {

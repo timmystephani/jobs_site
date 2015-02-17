@@ -1,6 +1,12 @@
 Jobssite::Application.routes.draw do
   devise_for :users
 
+  namespace :api, defaults: {  format: 'json'} do
+    namespace :v1 do
+      get 'companies/jobs/search' => 'jobs#search'
+    end
+  end
+
   resources :companies do
     collection do
       resources :jobs do
@@ -19,5 +25,5 @@ Jobssite::Application.routes.draw do
   
   get 'search/index' => 'search#index'
   get 'more/index' => 'more#index'
-  root :to => "home#index"
+  root :to => "search#index"
 end
